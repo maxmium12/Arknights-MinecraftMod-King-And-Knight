@@ -1,0 +1,45 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "texture_size": [
+    256,
+    256
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [68.25, -100, 2],
+      "translation": [1, 4, 11]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [68.25, 80, -2],
+      "translation": [1, 4, 11],
+      "scale": [1, 1, -1]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, -80, 0],
+      "translation": [5.5, -5.75, -9.75]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 100, 0],
+      "translation": [5.75, -4.25, -10.75]
+    },
+    "gui": {
+      "rotation": [0, 90, 0],
+      "translation": [0, -13.25, 0],
+      "scale": [0.8, 0.8, 0.8]
+    },
+    "fixed": {
+      "rotation": [0, -90, 0],
+      "translation": [0, 0, -1],
+      "scale": [0.4, 0.4, 0.4]
+    }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "pulling": 0
+      },
+      "model": "a2kn1gh7:item/irisweapon"
+    }
+  ]
+}

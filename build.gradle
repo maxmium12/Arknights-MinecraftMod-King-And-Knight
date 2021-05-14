@@ -43,6 +43,9 @@ minecraft {
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'info'
 
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
             mods {
                 a2kn1gh7 {
                     source sourceSets.main
@@ -106,6 +109,7 @@ repositories {
         name = "Hwyla Maven"
         url = "https://maven.tehnut.info"
     }
+    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 }
 
 dependencies {
@@ -139,6 +143,11 @@ dependencies {
 
     compileOnly fg.deobf("mcp.mobius.waila:Hwyla:${project.hwyla_version}:api")
     runtimeOnly fg.deobf("mcp.mobius.waila:Hwyla:${project.hwyla_version}")
+
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51")
+
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.16.5:3.0.33')
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

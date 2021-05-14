@@ -1,5 +1,7 @@
 package com.nmmoc7.a2kn1gh7;
 
+import com.nmmoc7.a2kn1gh7.multiblock.ModMultiBlockCores;
+import com.nmmoc7.a2kn1gh7.multiblock.MultiBlockTileEntities;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -13,6 +15,7 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import software.bernie.geckolib3.GeckoLib;
 
 import java.util.stream.Collectors;
 
@@ -42,8 +45,16 @@ public class A2kn1gh7 {
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
+        register();
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        GeckoLib.initialize();
+    }
+
+    private void register() {
+        MultiBlockTileEntities.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
