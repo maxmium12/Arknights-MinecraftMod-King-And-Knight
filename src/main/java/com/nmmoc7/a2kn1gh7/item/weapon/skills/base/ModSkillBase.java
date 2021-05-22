@@ -1,25 +1,27 @@
-package com.nmmoc7.a2kn1gh7.item.weapon.skills;
+package com.nmmoc7.a2kn1gh7.item.weapon.skills.base;
 
+import com.nmmoc7.a2kn1gh7.item.weapon.skills.SkillData;
 import com.nmmoc7.a2kn1gh7.item.weapon.skills.abstracts.AbstractSkill;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.StringTextComponent;
 
 /**
  * @author DustW
  */
-public class Skill extends AbstractSkill {
-    protected Skill(String registerName,
-                    boolean hasWarmupTime, int warmupTime,
-                    CoolDownType coolDownType, int maxCoolDownTime,
-                    DurationType durationType, int maxDurationTime,
-                    boolean isAutoCast,
-                    int cost) {
+public class ModSkillBase extends AbstractSkill {
+    protected ModSkillBase(String registerName,
+                           boolean hasWarmupTime, int warmupTime,
+                           SkillPointType skillPointType, int maxCoolDownTime,
+                           DurationType durationType, int maxDurationTime,
+                           boolean isAutoCast,
+                           int cost) {
         this.setRegistryName(registerName);
 
         this.hasWarmupTime = hasWarmupTime;
         this.warmupTime = warmupTime;
 
-        this.coolDownType = coolDownType;
+        this.skillPointType = skillPointType;
         this.maxCoolDownTime = maxCoolDownTime;
 
         this.durationType = durationType;
@@ -31,6 +33,7 @@ public class Skill extends AbstractSkill {
 
     @Override
     public void cast(SkillData skillData, ItemStack weapon, PlayerEntity caster) {
-
+        caster.sendMessage(new StringTextComponent("1"), caster.getUniqueID());
+        skillData.setSkillPoint(0);
     }
 }

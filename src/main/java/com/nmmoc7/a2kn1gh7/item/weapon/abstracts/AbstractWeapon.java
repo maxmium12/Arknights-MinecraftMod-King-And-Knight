@@ -1,4 +1,4 @@
-package com.nmmoc7.a2kn1gh7.item.base;
+package com.nmmoc7.a2kn1gh7.item.weapon.abstracts;
 
 import com.nmmoc7.a2kn1gh7.A2kn1gh7;
 import com.nmmoc7.a2kn1gh7.capability.ModCapabilities;
@@ -6,8 +6,6 @@ import com.nmmoc7.a2kn1gh7.capability.weapon.WeaponCapability;
 import com.nmmoc7.a2kn1gh7.capability.weapon.WeaponCapabilityProvider;
 import com.nmmoc7.a2kn1gh7.item.InformationHelper;
 import com.nmmoc7.a2kn1gh7.item.ModWeapons;
-import com.nmmoc7.a2kn1gh7.item.weapon.skills.SkillData;
-import com.nmmoc7.a2kn1gh7.item.weapon.skills.abstracts.AbstractSkill;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.util.ITooltipFlag;
@@ -36,16 +34,14 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
 
-import static com.nmmoc7.a2kn1gh7.ModServerCounter.TPS;
-
 /**
  * @author DustW
  */
-public abstract class ModWeaponBase extends Item implements IAnimatable {
+public abstract class AbstractWeapon extends Item implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
     private final String controllerName = "controller";
 
-    public ModWeaponBase(String name, ItemGroup itemGroup, Supplier<Callable<ItemStackTileEntityRenderer>> render) {
+    public AbstractWeapon(String name, ItemGroup itemGroup, Supplier<Callable<ItemStackTileEntityRenderer>> render) {
         super(new Properties().group(itemGroup).setNoRepair().setISTER(render).maxStackSize(1));
 
         this.setRegistryName(new ResourceLocation(A2kn1gh7.MODID, name));
@@ -69,7 +65,7 @@ public abstract class ModWeaponBase extends Item implements IAnimatable {
         CompoundNBT nbt = Optional.ofNullable(super.getShareTag(stack)).orElseGet(CompoundNBT::new);
 
         stack.getCapability(ModCapabilities.WEAPON_CAPABILITY).ifPresent(theCap -> {
-            nbt.put("skillUpdate", theCap.activeSkill.serializeNBT());
+            nbt.put("skillUpdate", theCap.getActiveSkill().serializeNBT());
         });
 
         return nbt;
@@ -80,7 +76,7 @@ public abstract class ModWeaponBase extends Item implements IAnimatable {
         super.readShareTag(stack, nbt);
 
         stack.getCapability(ModCapabilities.WEAPON_CAPABILITY).ifPresent(theCap -> {
-            theCap.activeSkill.deserializeNBT(nbt.getCompound("skillUpdate"));
+            theCap.getActiveSkill().deserializeNBT(nbt.getCompound("skillUpdate"));
         });
     }
 
@@ -96,9 +92,9 @@ public abstract class ModWeaponBase extends Item implements IAnimatable {
         capability.ifPresent(theCap -> {
             InformationHelper.addInformation(tooltip,
                     "当前技能: ",
-                    "    " + theCap.activeSkill.getDisplayName().getString(),
-                    "    技力: " + theCap.activeSkill.getSkillPoint() + "/" + theCap.activeSkill.getMaxCoolDownTime(),
-                    "    技能持续时间: " + (theCap.activeSkill.getDurationTime()) + "/" + theCap.activeSkill.getMaxDurationTime(),
+                    "    " + theCap.getActiveSkill().getDisplayName().getString(),
+                    "    技力: " + theCap.getActiveSkill().getSkillPoint() + "/" + theCap.getActiveSkill().getMaxSkillPoint(),
+                    "    技能持续时间: " + (theCap.getActiveSkill().getDurationTime()) + "/" + theCap.getActiveSkill().getMaxDurationTime(),
                     " ",
                     "所有技能: ",
                     "    技能1: ",

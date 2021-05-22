@@ -1,5 +1,7 @@
-package com.nmmoc7.a2kn1gh7.capability;
+package com.nmmoc7.a2kn1gh7.capability.level;
 
+import com.nmmoc7.a2kn1gh7.capability.ModCapabilities;
+import com.nmmoc7.a2kn1gh7.capability.interfaces.IPlayerCapabilityProvider;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -13,8 +15,8 @@ import javax.annotation.Nullable;
 /**
  * @author DustW
  */
-public class LevelCapabilityProvider implements ICapabilityProvider, INBTSerializable<CompoundNBT> {
-    private ILevelCapability levelCapability;
+public class LevelCapabilityProvider implements IPlayerCapabilityProvider {
+    private LevelCapability levelCapability;
 
     @Nonnull
     @Override
@@ -22,8 +24,9 @@ public class LevelCapabilityProvider implements ICapabilityProvider, INBTSeriali
         return cap == ModCapabilities.LEVEL_CAPABILITY ? LazyOptional.of(this::getOrCreateCapability).cast() : LazyOptional.empty();
     }
 
+    @Override
     @Nonnull
-    ILevelCapability getOrCreateCapability() {
+    public LevelCapability getOrCreateCapability() {
         if (levelCapability == null) {
             this.levelCapability = new LevelCapability();
         }

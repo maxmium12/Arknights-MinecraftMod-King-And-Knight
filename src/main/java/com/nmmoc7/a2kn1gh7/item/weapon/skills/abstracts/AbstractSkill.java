@@ -1,11 +1,11 @@
-package com.nmmoc7.a2kn1gh7.item.weapon.skills;
+package com.nmmoc7.a2kn1gh7.item.weapon.skills.abstracts;
 
 import com.nmmoc7.a2kn1gh7.A2kn1gh7;
+import com.nmmoc7.a2kn1gh7.item.weapon.skills.SkillData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
-import net.minecraft.util.registry.Registry;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,7 @@ public abstract class AbstractSkill {
     protected DurationType durationType;
     protected int maxDurationTime;
 
-    protected CoolDownType coolDownType;
+    protected SkillPointType skillPointType;
     protected int maxCoolDownTime;
     /** 如果是true，在冷却时间结束后自动开启 */
     protected boolean isAutoCast;
@@ -89,12 +89,20 @@ public abstract class AbstractSkill {
         return this.docTranslationKey;
     }
 
-    public CoolDownType getCoolDownType() {
-        return coolDownType;
+    public SkillPointType getCoolDownType() {
+        return skillPointType;
+    }
+
+    public int getMaxCoolDownTime() {
+        return maxCoolDownTime;
     }
 
     public DurationType getDurationType() {
         return durationType;
+    }
+
+    public int getMaxDurationTime() {
+        return maxDurationTime;
     }
 
     public void setRegistryName(String registryName) {
@@ -105,6 +113,14 @@ public abstract class AbstractSkill {
         return registryName;
     }
 
+    public boolean hasWarmupTime() {
+        return hasWarmupTime;
+    }
+
+    public int getWarmupTime() {
+        return warmupTime;
+    }
+
     /**
      * 施法
      * @param skillData 施法的技能
@@ -113,7 +129,7 @@ public abstract class AbstractSkill {
      */
     public abstract void cast(SkillData skillData, ItemStack weapon, PlayerEntity caster);
 
-    public enum CoolDownType {
+    public enum SkillPointType {
         /** 攻击回复 */
         ATTACK,
         /** 受击回复 */
