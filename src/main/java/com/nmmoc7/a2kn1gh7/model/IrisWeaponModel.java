@@ -1,27 +1,26 @@
 package com.nmmoc7.a2kn1gh7.model;
 
 import com.nmmoc7.a2kn1gh7.A2kn1gh7;
-import com.nmmoc7.a2kn1gh7.item.base.ModWeaponBase;
+import com.nmmoc7.a2kn1gh7.item.weapon.abstracts.AbstractWeapon;
 import net.minecraft.util.ResourceLocation;
-import software.bernie.example.item.JackInTheBoxItem;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 /**
  * @author DustW
  */
-public class IrisWeaponModel extends AnimatedGeoModel<ModWeaponBase> {
+public class IrisWeaponModel extends AnimatedGeoModel<AbstractWeapon> {
     @Override
-    public ResourceLocation getModelLocation(ModWeaponBase object) {
-        return new ResourceLocation(A2kn1gh7.MODID, "geo/irisweapon.geo.json");
+    public ResourceLocation getModelLocation(AbstractWeapon object) {
+        return new ResourceLocation(A2kn1gh7.MODID, "geo/iris_weapon.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ModWeaponBase object) {
-        return new ResourceLocation(A2kn1gh7.MODID, "textures/item/irisweapon.png");
+    public ResourceLocation getTextureLocation(AbstractWeapon object) {
+        return new ResourceLocation(A2kn1gh7.MODID, "textures/item/iris_weapon.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(ModWeaponBase animatable) {
+    public ResourceLocation getAnimationFileLocation(AbstractWeapon animatable) {
         return new ResourceLocation(A2kn1gh7.MODID);
     }
 }

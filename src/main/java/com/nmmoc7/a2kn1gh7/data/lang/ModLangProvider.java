@@ -1,7 +1,9 @@
 package com.nmmoc7.a2kn1gh7.data.lang;
 
 import com.nmmoc7.a2kn1gh7.A2kn1gh7;
+import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.data.LanguageProvider;
 
 /**
@@ -18,6 +20,14 @@ public abstract class ModLangProvider extends LanguageProvider {
      }
 
      public void addItemGroup(String id, String name) {
-            add("itemGroup.a2kn1gh7." + id, name);
+            add("itemGroup." + id, name);
      }
+
+    public void addItem(Item key, String name) {
+        super.addItem(() -> key, name);
+    }
+
+    public void addBlock(Block key, String name) {
+         super.addBlock(() -> key, name);
+    }
 }

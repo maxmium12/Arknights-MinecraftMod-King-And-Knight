@@ -1,9 +1,7 @@
 package com.nmmoc7.a2kn1gh7.item;
 
-import com.nmmoc7.a2kn1gh7.item.base.ModWeaponBase;
-import com.nmmoc7.a2kn1gh7.itemgroup.ModItemGroups;
-import com.nmmoc7.a2kn1gh7.model.IrisWeaponRender;
-import net.minecraft.item.Item;
+import com.nmmoc7.a2kn1gh7.item.weapon.abstracts.AbstractWeapon;
+import com.nmmoc7.a2kn1gh7.item.weapon.IrisWeapon;
 
 import java.util.ArrayList;
 
@@ -11,7 +9,7 @@ import java.util.ArrayList;
  * @author DustW
  */
 public class ModWeapons {
-    public static final ArrayList<ModWeaponBase> WEAPONS = new ArrayList<>();
+    public static final ArrayList<AbstractWeapon> WEAPONS = new ArrayList<>();
 
-    public static final ModWeaponBase TEST_WEAPON = new ModWeaponBase("irisweapon", ModItemGroups.WEAPON_GROUP, () -> IrisWeaponRender::new);
+    public static final AbstractWeapon IRIS_WEAPON = new IrisWeapon();
 }

@@ -9,6 +9,7 @@
   "item.a2kn1gh7.source_rocks": "Originium",
   "item.a2kn1gh7.sugar_substitute": "Sugar Substitute",
   "item.a2kn1gh7.w_ketone": "Diketon",
-  "itemGroup.a2kn1gh7.a2kn1gh7.block_group": "A2kn1gh7 Blocks",
-  "itemGroup.a2kn1gh7.a2kn1gh7.item_group": "A2kn1gh7 Items"
+  "itemGroup.a2kn1gh7.block_group": "A2kn1gh7 Blocks",
+  "itemGroup.a2kn1gh7.item_group": "A2kn1gh7 Items",
+  "skill.a2kn1gh7.empty": "No Skill"
 }

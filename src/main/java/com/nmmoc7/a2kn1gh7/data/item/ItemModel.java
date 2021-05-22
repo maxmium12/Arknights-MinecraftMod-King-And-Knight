@@ -1,9 +1,9 @@
 package com.nmmoc7.a2kn1gh7.data.item;
 
 import com.nmmoc7.a2kn1gh7.A2kn1gh7;
-import com.nmmoc7.a2kn1gh7.block.base.ModBlockSupplierBase;
+import com.nmmoc7.a2kn1gh7.block.base.ModItemBlockBase;
 import com.nmmoc7.a2kn1gh7.item.ModItems;
-import com.nmmoc7.a2kn1gh7.item.base.ModItemSupplierBase;
+import com.nmmoc7.a2kn1gh7.item.base.ModItemBase;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -59,10 +59,10 @@ public class ItemModel extends ItemModelProvider {
     @Override
     protected void registerModels() {
         for (Item item: ModItems.ITEM_LIST) {
-            if (item instanceof ModItemSupplierBase.ModItemBase) {
+            if (item instanceof ModItemBase) {
                 simpleItem(item);
             }
-            else if (item instanceof ModBlockSupplierBase.ModItemBlockBase) {
+            else if (item instanceof ModItemBlockBase) {
                 simpleBlockItem((BlockItem) item);
             }
         }

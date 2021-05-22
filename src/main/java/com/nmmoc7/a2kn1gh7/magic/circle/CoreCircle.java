@@ -3,7 +3,6 @@ package com.nmmoc7.a2kn1gh7.magic.circle;
 import com.nmmoc7.a2kn1gh7.A2kn1gh7;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.IntArrayNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;

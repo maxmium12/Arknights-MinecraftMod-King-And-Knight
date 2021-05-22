@@ -4,7 +4,6 @@ import com.nmmoc7.a2kn1gh7.A2kn1gh7;
 import com.nmmoc7.a2kn1gh7.data.item.ItemModel;
 import com.nmmoc7.a2kn1gh7.data.lang.LangEnUs;
 import com.nmmoc7.a2kn1gh7.data.lang.LangZhCn;
-import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

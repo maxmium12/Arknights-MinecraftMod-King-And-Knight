@@ -8,7 +8,7 @@ import net.minecraft.data.DataGenerator;
 /**
  * @author DustW
  */
-public class LangEnUs extends ModLangProvider{
+public class LangEnUs extends ModLangProvider {
     public LangEnUs(DataGenerator gen) {
         super(gen, "en_us");
     }

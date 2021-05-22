@@ -1,18 +1,12 @@
 package com.nmmoc7.a2kn1gh7.magic.circle;
 
-import com.nmmoc7.a2kn1gh7.A2kn1gh7;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.network.NetworkHooks;
 
@@ -24,7 +18,6 @@ import java.util.UUID;
  */
 public class EntityCircleTest extends Entity {
     private final CoreCircle[] CIRCLES;
-
 
     private static final DataParameter<Float> COLOR_R = EntityDataManager.createKey(EntityCircleTest.class, DataSerializers.FLOAT);
     private static final DataParameter<Float> COLOR_G = EntityDataManager.createKey(EntityCircleTest.class, DataSerializers.FLOAT);

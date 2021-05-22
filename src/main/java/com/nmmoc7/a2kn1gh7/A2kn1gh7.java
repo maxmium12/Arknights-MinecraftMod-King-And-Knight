@@ -1,7 +1,7 @@
 package com.nmmoc7.a2kn1gh7;
 
-import com.nmmoc7.a2kn1gh7.multiblock.ModMultiBlockCores;
-import com.nmmoc7.a2kn1gh7.multiblock.MultiBlockTileEntities;
+import com.nmmoc7.a2kn1gh7.capability.CommonEventHandler;
+import com.nmmoc7.a2kn1gh7.capability.ModCapabilities;
 import net.minecraft.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -54,7 +54,6 @@ public class A2kn1gh7 {
     }
 
     private void register() {
-        MultiBlockTileEntities.register();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
