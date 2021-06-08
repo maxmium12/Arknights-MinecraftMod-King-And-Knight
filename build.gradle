@@ -14,9 +14,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = "${project.mc_version}-${project.a2kn1gh7_version}"
+version = "${project.mc_version}-${project.king_and_knight_version}"
 group = 'com.nmmoc7' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'a2kn1gh7'
+archivesBaseName = 'king_and_knight'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
@@ -47,7 +47,7 @@ minecraft {
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
 
             mods {
-                a2kn1gh7 {
+                king_and_knight {
                     source sourceSets.main
                 }
             }
@@ -63,7 +63,7 @@ minecraft {
             property 'forge.logging.console.level', 'info'
 
             mods {
-                a2kn1gh7 {
+                king_and_knight {
                     source sourceSets.main
                 }
             }
@@ -78,10 +78,10 @@ minecraft {
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'info'
 
-            args '--mod', 'a2kn1gh7', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'king_and_knight', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
-                a2kn1gh7 {
+                king_and_knight {
                     source sourceSets.main
                 }
             }
@@ -155,12 +155,12 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "a2kn1gh7",
-                "Specification-Vendor"    : "a2kn1gh7",
+                "Specification-Title"     : "king_and_knight",
+                "Specification-Vendor"    : "king_and_knight",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "a2kn1gh7",
+                "Implementation-Vendor"   : "king_and_knight",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

@@ -1,0 +1,14 @@
+{
+  "block.king_and_knight.source_rocks_block": "Compress Originium Block",
+  "item.king_and_knight.crafting_jade": "Orundum",
+  "item.king_and_knight.damaged_device": "Damaged Device",
+  "item.king_and_knight.ester": "Ester",
+  "item.king_and_knight.high_pure_source_rocks": "Originite Prime",
+  "item.king_and_knight.oriron_shard": "Oriron Shard",
+  "item.king_and_knight.source_rock": "Orirock",
+  "item.king_and_knight.source_rocks": "Originium",
+  "item.king_and_knight.sugar_substitute": "Sugar Substitute",
+  "item.king_and_knight.w_ketone": "Diketon",
+  "itemGroup.king_and_knight.block_group": "KingAndKnight Blocks",
+  "itemGroup.king_and_knight.item_group": "KingAndKnight Items"
+}

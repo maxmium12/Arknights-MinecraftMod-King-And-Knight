@@ -1,0 +1,14 @@
+{
+  "block.king_and_knight.source_rocks_block": "\u538B\u7F29\u6E90\u77F3\u5757",
+  "item.king_and_knight.crafting_jade": "\u5408\u6210\u7389",
+  "item.king_and_knight.damaged_device": "\u7834\u635F\u88C5\u7F6E",
+  "item.king_and_knight.ester": "\u916F\u539F\u6599",
+  "item.king_and_knight.high_pure_source_rocks": "\u81F3\u7EAF\u6E90\u77F3",
+  "item.king_and_knight.oriron_shard": "\u5F02\u94C1\u788E\u7247",
+  "item.king_and_knight.source_rock": "\u6E90\u5CA9",
+  "item.king_and_knight.source_rocks": "\u6E90\u77F3",
+  "item.king_and_knight.sugar_substitute": "\u4EE3\u7CD6",
+  "item.king_and_knight.w_ketone": "\u53CC\u916E",
+  "itemGroup.king_and_knight.block_group": "\u6F2B\u591C\u9A91\u58EB \u65B9\u5757",
+  "itemGroup.king_and_knight.item_group": "\u6F2B\u591C\u9A91\u58EB \u7269\u54C1"
+}

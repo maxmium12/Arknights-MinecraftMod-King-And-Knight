@@ -1,0 +1,14 @@
+{
+  "type": "king_and_knight:infrastructure_recipes",
+  "machineSlotSize": 6,
+  "input": [
+    [
+      "apple",
+      2
+    ]
+  ],
+  "output": {
+    "item": "king_and_knight:ester",
+    "nbt": "{}"
+  }
+}

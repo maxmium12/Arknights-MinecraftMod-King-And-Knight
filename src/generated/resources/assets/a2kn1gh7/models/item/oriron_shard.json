@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "a2kn1gh7:item/oriron_shard"
-  }
-}
