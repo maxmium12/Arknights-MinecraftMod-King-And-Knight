@@ -1,4 +1,4 @@
-package com.nmmoc7.kingandkinght.machines.recipes;
+package com.nmmoc7.kingandkinght.recipes;
 
 import com.nmmoc7.kingandkinght.KingAndKnight;
 import com.nmmoc7.kingandkinght.item.ModItems;
@@ -8,7 +8,6 @@ import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.ResourceLocation;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author DustW

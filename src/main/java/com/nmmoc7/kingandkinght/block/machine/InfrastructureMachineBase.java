@@ -1,13 +1,14 @@
 package com.nmmoc7.kingandkinght.block.machine;
 
 import com.nmmoc7.kingandkinght.itemgroup.ModItemGroups;
-import com.nmmoc7.kingandkinght.machines.tileentity.InfrastructureTileEntity;
+import com.nmmoc7.kingandkinght.tileentity.InfrastructureTileEntity;
+import com.nmmoc7.kingandkinght.tileentity.abstracts.AbstractTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -16,7 +17,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -53,14 +53,42 @@ public class InfrastructureMachineBase extends AbstractMachine {
 
     @Override
     public ActionResultType onBlockActivatedServer(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        InfrastructureTileEntity tileEntity = (InfrastructureTileEntity) worldIn.getTileEntity(pos);
-        openGui(player, tileEntity);
+        AbstractTileEntity tileEntity = getTileEntity(worldIn, pos);
+        AbstractTileEntity.ModItemStackHandlerBase handler = tileEntity.getHandler();
+
+        if (!player.isSneaking()) {
+            ItemStack heldItem = player.getHeldItem(handIn);
+
+            for (int i = 0; i < handler.getSlots(); i++) {
+                if (handler.getStackInSlot(i) == ItemStack.EMPTY) {
+                    handler.setStackInSlot(i, heldItem.copy());
+                    player.setHeldItem(handIn, ItemStack.EMPTY);
+                    break;
+                }
+            }
+        }
+        else {
+            for (int i = handler.getSlots() - 1; i >= 0; i--) {
+                if (handler.getStackInSlot(i) != ItemStack.EMPTY) {
+
+                    worldIn.addEntity(
+                            new ItemEntity(
+                                    worldIn,
+                                    player.getPosX(), player.getPosY(), player.getPosZ(),
+                                    handler.getStackInSlot(i).copy())
+                    );
+
+                    handler.setStackInSlot(i, ItemStack.EMPTY);
+                    break;
+                }
+            }
+        }
+
+
         return ActionResultType.SUCCESS;
     }
 
-    public static <T extends TileEntity & INamedContainerProvider> void openGui(ServerPlayerEntity player, T container) {
-        NetworkHooks.openGui(player, container, (PacketBuffer packerBuffer) -> {
-            packerBuffer.writeBlockPos(container.getPos());
-        });
+    public AbstractTileEntity getTileEntity(World world, BlockPos pos) {
+        return (AbstractTileEntity) world.getTileEntity(pos);
     }
 }

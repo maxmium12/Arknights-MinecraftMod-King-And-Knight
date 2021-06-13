@@ -1,6 +1,6 @@
 package com.nmmoc7.kingandkinght.network.server;
 
-import com.nmmoc7.kingandkinght.machines.tileentity.abstracts.AbstractTileEntity;
+import com.nmmoc7.kingandkinght.tileentity.abstracts.AbstractTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

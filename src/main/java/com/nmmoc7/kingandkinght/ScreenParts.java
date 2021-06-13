@@ -1,6 +1,5 @@
-package com.nmmoc7.kingandkinght.machines.tileentity.container;
+package com.nmmoc7.kingandkinght;
 
-import com.nmmoc7.kingandkinght.KingAndKnight;
 import net.minecraft.util.ResourceLocation;
 
 /**

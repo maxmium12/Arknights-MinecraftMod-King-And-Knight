@@ -1,10 +1,11 @@
-package com.nmmoc7.kingandkinght.machines.recipes;
+package com.nmmoc7.kingandkinght.recipes;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.nmmoc7.kingandkinght.KingAndKnight;
 import com.nmmoc7.kingandkinght.block.ModBlocks;
+import com.nmmoc7.kingandkinght.recipes.ModRecipes;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -23,7 +24,6 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author DustW
@@ -47,6 +47,10 @@ public class InfrastructureRecipes implements IRecipe<IInventory>, IFinishedReci
         this.output = output;
         this.machineSlotSize = machineSlotSize;
         this.id = id;
+    }
+
+    public Map<Item, Integer> getInputs() {
+        return inputs;
     }
 
     @Override
@@ -117,13 +121,7 @@ public class InfrastructureRecipes implements IRecipe<IInventory>, IFinishedReci
     }
 
     public boolean isValid(ItemStack... inputs) {
-        Map<Item, Integer> scanResult = new HashMap<>();
-
-        for (ItemStack input : inputs) {
-            scanResult.put(input.getItem(), input.getCount());
-        }
-
-        return this.inputs.keySet().stream().noneMatch((key) -> scanResult.get(key) < this.inputs.get(key));
+        return Arrays.stream(inputs).noneMatch(this::hasInput);
     }
 
     @Override

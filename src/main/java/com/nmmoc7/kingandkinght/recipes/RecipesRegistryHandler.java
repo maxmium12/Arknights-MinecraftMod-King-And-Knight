@@ -1,6 +1,5 @@
-package com.nmmoc7.kingandkinght.machines.recipes;
+package com.nmmoc7.kingandkinght.recipes;
 
-import com.nmmoc7.kingandkinght.block.ModBlocks;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

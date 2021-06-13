@@ -7,9 +7,15 @@ import com.nmmoc7.kingandkinght.network.server.PlayerCapabilitySyncServer;
 import com.nmmoc7.kingandkinght.network.server.WeaponCapabilitySyncServer;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 /**
  * @author DustW

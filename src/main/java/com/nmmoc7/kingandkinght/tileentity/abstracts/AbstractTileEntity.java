@@ -1,30 +1,28 @@
-package com.nmmoc7.kingandkinght.machines.tileentity.abstracts;
+package com.nmmoc7.kingandkinght.tileentity.abstracts;
 
-import com.nmmoc7.kingandkinght.machines.tileentity.ModTileEntityOpeningHandler;
+import com.nmmoc7.kingandkinght.tileentity.ModTileEntityOpeningHandler;
 import com.nmmoc7.kingandkinght.network.ModNetworkManager;
 import com.nmmoc7.kingandkinght.network.server.ItemHandlerSyncServer;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
-import net.minecraft.util.IIntArray;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author DustW
  */
-public abstract class AbstractTileEntity extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
+public abstract class AbstractTileEntity extends TileEntity implements ITickableTileEntity {
     protected int level;
     protected ModItemStackHandlerBase handler;
-    protected ModItemNumberBase itemNumber;
     protected String registerName;
-    protected ServerPlayerEntity openingPlayer;
 
     private AbstractTileEntity(){ super(null); }
 
@@ -42,10 +40,6 @@ public abstract class AbstractTileEntity extends TileEntity implements ITickable
 
     public void customOnSlotChange(int slot) {
 
-    }
-
-    public void bindOpeningPlayer(ServerPlayerEntity player) {
-        this.openingPlayer = player;
     }
 
     public void setLevel(int level) {
@@ -75,6 +69,10 @@ public abstract class AbstractTileEntity extends TileEntity implements ITickable
             super(size);
         }
 
+        public NonNullList<ItemStack> getStacks() {
+            return stacks;
+        }
+
         @Override
         public void onContentsChanged(int slot) {
             customOnSlotChange(slot);
@@ -90,32 +88,24 @@ public abstract class AbstractTileEntity extends TileEntity implements ITickable
         }
 
         public void sync(int slot) {
-            getOpeningPlayers().forEach((player) -> {
-                ModNetworkManager.serverSendToPlayer(new ItemHandlerSyncServer(getStackInSlot(slot).serializeNBT(), slot, pos), player);
+            if (!world.isRemote) {
+                ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers().forEach((player) -> {
+                    if (player.getPosition().distanceSq(pos) < 16) {
+                        ModNetworkManager.serverSendToPlayer(new ItemHandlerSyncServer(getStackInSlot(slot).serializeNBT(), slot, pos), player);
+                    }
+                });
+            }
+        }
+
+        public void shrinkStackUnCheck(ItemStack stack) {
+            AtomicInteger amount = new AtomicInteger(stack.getCount());
+
+            getStacks().forEach(itemStack -> {
+                if (itemStack.getItem() == stack.getItem()) {
+                    amount.addAndGet(-itemStack.getCount());
+                    itemStack.shrink(itemStack.getCount());
+                }
             });
-        }
-    }
-
-    public static class ModItemNumberBase implements IIntArray {
-        int[] numbers;
-
-        public ModItemNumberBase(int size) {
-            numbers = new int[size];
-        }
-
-        @Override
-        public int get(int index) {
-            return numbers[index];
-        }
-
-        @Override
-        public void set(int index, int value) {
-            numbers[index] = value;
-        }
-
-        @Override
-        public int size() {
-            return numbers.length;
         }
     }
 }

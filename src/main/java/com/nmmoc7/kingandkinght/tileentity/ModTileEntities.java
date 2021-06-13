@@ -1,4 +1,4 @@
-package com.nmmoc7.kingandkinght.machines.tileentity;
+package com.nmmoc7.kingandkinght.tileentity;
 
 import com.nmmoc7.kingandkinght.KingAndKnight;
 import com.nmmoc7.kingandkinght.block.ModBlocks;

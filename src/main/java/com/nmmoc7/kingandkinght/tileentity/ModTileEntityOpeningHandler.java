@@ -1,4 +1,4 @@
-package com.nmmoc7.kingandkinght.machines.tileentity;
+package com.nmmoc7.kingandkinght.tileentity;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntityType;
