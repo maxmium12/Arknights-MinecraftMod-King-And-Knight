@@ -6,6 +6,7 @@ import com.nmmoc7.kingandkinght.capability.weapon.WeaponCapability;
 import com.nmmoc7.kingandkinght.capability.weapon.WeaponCapabilityProvider;
 import com.nmmoc7.kingandkinght.item.InformationHelper;
 import com.nmmoc7.kingandkinght.item.ModWeapons;
+import com.nmmoc7.kingandkinght.item.weapon.AttackUtil;
 import com.nmmoc7.kingandkinght.item.weapon.WeaponUtil;
 import com.nmmoc7.kingandkinght.item.weapon.skills.enums.AttackRangeType;
 import net.minecraft.block.BlockState;
@@ -21,6 +22,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
@@ -152,22 +154,25 @@ public abstract class AbstractWeapon extends Item implements IAnimatable {
         return attackSpeed;
     }
 
-    public int[] getOrSearchAttackRangeCore(ItemStack weapon) {
-        WeaponCapability cap = weapon.getCapability(ModCapabilities.WEAPON_CAPABILITY).resolve().get();
-
-        if (cap.lastCoreTier != cap.activeTier) {
-            cap.setAttackRangeCore(WeaponUtil.searchAttackRangeCore(tierToAttackRangeMap.get(cap.activeTier)));
-        }
-
-        return cap.getAttackRangeCore();
-    }
-
     public AttackRangeType[][] getAttackRange(int tier) {
         return tierToAttackRangeMap.get(tier);
     }
 
     public void addTierToAttackRange(int tier, AttackRangeType[][] attackRangeTypes) {
         tierToAttackRangeMap.put(tier, attackRangeTypes);
+    }
+
+    public void onLeftClick(ServerPlayerEntity player, ItemStack weapon) {
+        player.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(
+                player.getPosX() + 5,
+                player.getPosY() + 5,
+                player.getPosZ() + 5,
+                player.getPosX() - 5,
+                player.getPosY() - 5,
+                player.getPosZ() - 5
+        )).forEach(entity -> {
+            AttackUtil.canAttack(player, entity);
+        });
     }
 
     @Override

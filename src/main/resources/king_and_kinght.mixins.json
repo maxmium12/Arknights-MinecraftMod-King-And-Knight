@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.nmmoc7.kingandkinght.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "king_and_kinght.refmap.json",
+  "mixins": [
+    "MixinMinecraft"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

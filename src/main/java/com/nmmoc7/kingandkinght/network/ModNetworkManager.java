@@ -1,21 +1,17 @@
 package com.nmmoc7.kingandkinght.network;
 
 import com.nmmoc7.kingandkinght.KingAndKnight;
+import com.nmmoc7.kingandkinght.network.client.IClientMessage;
+import com.nmmoc7.kingandkinght.network.client.LeftClickClient;
 import com.nmmoc7.kingandkinght.network.server.IServerMessage;
 import com.nmmoc7.kingandkinght.network.server.ItemHandlerSyncServer;
 import com.nmmoc7.kingandkinght.network.server.PlayerCapabilitySyncServer;
 import com.nmmoc7.kingandkinght.network.server.WeaponCapabilitySyncServer;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Supplier;
 
 /**
  * @author DustW
@@ -50,6 +46,11 @@ public class ModNetworkManager {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), packet);
     }
 
+    /** 不 要 在 服 务 端 调 用 */
+    public static <T extends IClientMessage> void clientSendToServer(T packet) {
+        INSTANCE.sendToServer(packet);
+    }
+
     public static void registerPackets() {
         // INSTANCE 是之前注册的 SimpleChannel 实例
         // registerMessage 的第一个参数是要注册数据包的 unique id，请确保每个数据包的 unique id 不同
@@ -72,5 +73,11 @@ public class ModNetworkManager {
                 ItemHandlerSyncServer::encode,
                 ItemHandlerSyncServer::decode,
                 ItemHandlerSyncServer::handle);
+
+        INSTANCE.registerMessage(id++,
+                LeftClickClient.class,
+                LeftClickClient::encode,
+                LeftClickClient::decode,
+                LeftClickClient::handle);
     }
 }

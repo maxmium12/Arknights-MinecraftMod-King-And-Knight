@@ -1,8 +1,8 @@
 package com.nmmoc7.kingandkinght.tileentity.abstracts;
 
-import com.nmmoc7.kingandkinght.tileentity.ModTileEntityOpeningHandler;
 import com.nmmoc7.kingandkinght.network.ModNetworkManager;
 import com.nmmoc7.kingandkinght.network.server.ItemHandlerSyncServer;
+import com.nmmoc7.kingandkinght.tileentity.ModTileEntityOpeningHandler;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.ITickableTileEntity;

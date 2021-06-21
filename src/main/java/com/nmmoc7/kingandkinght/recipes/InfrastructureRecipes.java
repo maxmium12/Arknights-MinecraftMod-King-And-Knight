@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.nmmoc7.kingandkinght.KingAndKnight;
 import com.nmmoc7.kingandkinght.block.ModBlocks;
-import com.nmmoc7.kingandkinght.recipes.ModRecipes;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
