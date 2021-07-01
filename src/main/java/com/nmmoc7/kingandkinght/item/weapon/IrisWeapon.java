@@ -21,7 +21,7 @@ import static com.nmmoc7.kingandkinght.item.weapon.skills.enums.AttackRangeType.
  */
 public class IrisWeapon extends AbstractWeapon {
     public IrisWeapon() {
-        super("iris_weapon",22, 20, ModItemGroups.WEAPON_GROUP, () -> IrisWeaponRender::new);
+        super("iris_weapon", 548, 22, 20, ModItemGroups.WEAPON_GROUP, () -> IrisWeaponRender::new);
 
         addTierToAttackRange(0, new AttackRangeType[][]{
                 {N, Y, Y, N},
@@ -39,30 +39,10 @@ public class IrisWeapon extends AbstractWeapon {
                 {N, Y, Y, Y}
         });
     }
-
+    
     @Override
     public boolean onLeftClickEntity(ItemStack stack, PlayerEntity player, Entity entity) {
         return true;
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if (!worldIn.isRemote) {
-            super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
-
-            stack.getCapability(ModCapabilities.WEAPON_CAPABILITY).ifPresent(theCap -> {
-                if (theCap.getActiveSkill().getSkill() instanceof SkillFairyGuardian) {
-                    if (theCap.getActiveSkill().getDurationTime() > 0) {
-                        theCap.setCustomAttackRange(new AttackRangeType[][]{
-                                {O, Y, Y, Y, Y}
-                        });
-                    }
-                    else {
-                        theCap.setCustomAttackRange(null);
-                    }
-                }
-            });
-        }
     }
 
     @Override

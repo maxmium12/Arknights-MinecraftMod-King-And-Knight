@@ -1,5 +1,6 @@
 package com.nmmoc7.kingandkinght.capability.weapon;
 
+import com.nmmoc7.kingandkinght.ModServerCounter;
 import com.nmmoc7.kingandkinght.capability.ModCapabilities;
 import com.nmmoc7.kingandkinght.item.weapon.WeaponUtil;
 import com.nmmoc7.kingandkinght.item.weapon.abstracts.AbstractWeapon;
@@ -38,11 +39,20 @@ public class WeaponCapability implements INBTSerializable<CompoundNBT> {
 
     private AttackRangeType[][] customAttackRange;
 
+    private int level = 0;
     private int activeTier = 0;
 
     public int lastCoreTier = 0;
     private int[] attackRangeCore;
     private boolean attackRangeChanged;
+
+    private double attackDamageM = 1;
+    private int attackDamageP = 0;
+
+    private double attackSpeedM = 1;
+    private int attackSpeedP = 0;
+
+    private int lastAttackTick = 0;
 
     public int tickCount = 0;
 
@@ -59,6 +69,8 @@ public class WeaponCapability implements INBTSerializable<CompoundNBT> {
                             getActiveSkill().addSkillPoint(1);
                         }
                     }
+
+                    getActiveSkill().tick(player, weapon);
 
                     if (player.getHeldItemMainhand().getItem() instanceof AbstractWeapon) {
                         sync(player);
@@ -98,6 +110,42 @@ public class WeaponCapability implements INBTSerializable<CompoundNBT> {
         getActiveSkill().init();
     }
 
+    public int getAttackSpeed() {
+        return (int) (((AbstractWeapon) weapon.getItem()).getAttackSpeed() * getAttackSpeedM() + getAttackSpeedP());
+    }
+
+    public double getAttackSpeedM() {
+        return attackSpeedM;
+    }
+
+    public void setAttackSpeedM(double attackSpeedM) {
+        this.attackSpeedM = attackSpeedM;
+    }
+
+    public int getAttackSpeedP() {
+        return attackSpeedP;
+    }
+
+    public void setAttackSpeedP(int attackSpeedP) {
+        this.attackSpeedP = attackSpeedP;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getDefaultAttackAmount() {
+        return ((AbstractWeapon) weapon.getItem()).getBaseAttackAmount() + this.getLevel() * 5;
+    }
+
+    public int getAttackAmount() {
+        return (int) (getDefaultAttackAmount() * attackDamageM + attackDamageP);
+    }
+
     public void setCustomAttackRange(AttackRangeType[][] customAttackRange) {
         this.customAttackRange = customAttackRange;
         attackRangeChanged = true;
@@ -126,6 +174,30 @@ public class WeaponCapability implements INBTSerializable<CompoundNBT> {
 
     public boolean isAttackRangeChanged() {
         return attackRangeChanged;
+    }
+
+    public int getLastAttackTick() {
+        return lastAttackTick;
+    }
+
+    public void setLastAttackTick(int lastAttackTick) {
+        this.lastAttackTick = lastAttackTick;
+    }
+
+    public double getAttackDamageM() {
+        return attackDamageM;
+    }
+
+    public void setAttackDamageM(double attackDamageM) {
+        this.attackDamageM = attackDamageM;
+    }
+
+    public int getAttackDamageP() {
+        return attackDamageP;
+    }
+
+    public void setAttackDamageP(int attackDamageP) {
+        this.attackDamageP = attackDamageP;
     }
 
     @Override

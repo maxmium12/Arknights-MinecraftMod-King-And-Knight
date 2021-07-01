@@ -32,8 +32,6 @@ public class LeftClickClient implements IClientMessage {
                     AbstractWeapon weaponItem = (AbstractWeapon) sender.getHeldItemMainhand().getItem();
 
                     weaponItem.onLeftClick(sender, weapon);
-
-                    sender.sendMessage(new StringTextComponent("左键"), sender.getUniqueID());
                 }
             });
             ctx.get().setPacketHandled(true);

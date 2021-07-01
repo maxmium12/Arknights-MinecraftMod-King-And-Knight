@@ -2,8 +2,11 @@ package com.nmmoc7.kingandkinght.item.weapon.skills.abstracts;
 
 import com.nmmoc7.kingandkinght.KingAndKnight;
 import com.nmmoc7.kingandkinght.item.weapon.skills.SkillData;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 
@@ -17,13 +20,10 @@ import java.util.function.Supplier;
 public abstract class AbstractSkill {
     /** 如果是false，切换技能后从零开始计数 */
     protected boolean hasWarmupTime;
-    protected int warmupTime;
 
     protected DurationType durationType;
-    protected int maxDurationTime;
 
     protected SkillPointType skillPointType;
-    protected int maxCoolDownTime;
     /** 如果是true，在冷却时间结束后自动开启 */
     protected boolean isAutoCast;
 
@@ -86,17 +86,23 @@ public abstract class AbstractSkill {
         return skillPointType;
     }
 
-    public int getMaxCoolDownTime() {
-        return maxCoolDownTime;
-    }
+    /**
+     * 最大冷却
+     * @param level 等级
+     * @return maxCoolDown
+     */
+    public abstract int getMaxCoolDownTime(int level);
 
     public DurationType getDurationType() {
         return durationType;
     }
 
-    public int getMaxDurationTime() {
-        return maxDurationTime;
-    }
+    /**
+     * 最大持续时间
+     * @param level 等级
+     * @return maxDurationTime
+     */
+    public abstract int getMaxDurationTime(int level);
 
     public void setRegistryName(String registryName) {
         this.registryName = registryName;
@@ -110,27 +116,73 @@ public abstract class AbstractSkill {
         return hasWarmupTime;
     }
 
-    public int getWarmupTime() {
-        return warmupTime;
-    }
+    /**
+     * 预热时间
+     * @param level 等级
+     * @return warmupTime
+     */
+    public abstract int getWarmupTime(int level);
 
     public int getMaxSkillLevel() {
         return maxSkillLevel;
     }
 
     /**
-     * 施法
-     * @param skillData 施法的技能
-     * @param weapon 施法的武器
-     * @param caster 施法者
+     * 技能开始释放
+     * @param player 释放者
+     * @param weapon 武器
+     * @param skillData 技能
+     * @return 如果是SUCCESS则继续执行， FAIL就不继续执行
      */
-    public abstract void cast(SkillData skillData, ItemStack weapon, PlayerEntity caster);
+    public abstract CastResult castBegin(ServerPlayerEntity player, ItemStack weapon, SkillData skillData);
+
+    /**
+     * 在NATURAL的情况下激活这个
+     * @param player 施法者
+     * @param weapon 武器
+     * @param skillData 技能
+     * @param tick 从技能释放开始经过的tick
+     */
+    public abstract void castTick(ServerPlayerEntity player, ItemStack weapon, SkillData skillData, int tick);
+
+    /**
+     * 在ATTACK的时候激活这个
+     * @param player 施法者
+     * @param target 攻击的目标
+     * @param weapon 武器
+     * @param skillData 技能
+     */
+    public abstract void castAttack(ServerPlayerEntity player, Entity target, ItemStack weapon, SkillData skillData);
+
+    /**
+     * 在UNDER_ATTACK的情况下激活这个
+     * @param player 施法者
+     * @param attacker 攻击的生物
+     * @param weapon 武器
+     * @param skillData 技能
+     */
+    public abstract void castUnderAttack(ServerPlayerEntity player, Entity attacker, ItemStack weapon, SkillData skillData);
+
+    /**
+     * 技能结束的时候激活
+     * @param player 施法者
+     * @param weapon 武器
+     * @param skillData 技能
+     */
+    public abstract void castFinish(ServerPlayerEntity player, ItemStack weapon, SkillData skillData);
+
+    public enum CastResult {
+        /** 成功 */
+        SUCCESS,
+        /** 失败 */
+        FAIL
+    }
 
     public enum SkillPointType {
         /** 攻击回复 */
         ATTACK,
         /** 受击回复 */
-        BE_HIT,
+        UNDER_ATTACK,
         /** 自然回复 */
         NATURAL,
         /** 无冷却 */
@@ -141,7 +193,7 @@ public abstract class AbstractSkill {
         /** 攻击减少 */
         ATTACK,
         /** 受击减少 */
-        BE_HIT,
+        UNDER_ATTACK,
         /** 自然减少 */
         NATURAL,
         /** 不减少 */

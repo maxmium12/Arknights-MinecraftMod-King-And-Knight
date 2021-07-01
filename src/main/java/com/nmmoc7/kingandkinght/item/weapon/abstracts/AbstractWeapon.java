@@ -1,6 +1,7 @@
 package com.nmmoc7.kingandkinght.item.weapon.abstracts;
 
 import com.nmmoc7.kingandkinght.KingAndKnight;
+import com.nmmoc7.kingandkinght.ModServerCounter;
 import com.nmmoc7.kingandkinght.capability.ModCapabilities;
 import com.nmmoc7.kingandkinght.capability.weapon.WeaponCapability;
 import com.nmmoc7.kingandkinght.capability.weapon.WeaponCapabilityProvider;
@@ -8,6 +9,8 @@ import com.nmmoc7.kingandkinght.item.InformationHelper;
 import com.nmmoc7.kingandkinght.item.ModWeapons;
 import com.nmmoc7.kingandkinght.item.weapon.AttackUtil;
 import com.nmmoc7.kingandkinght.item.weapon.WeaponUtil;
+import com.nmmoc7.kingandkinght.item.weapon.skills.SkillData;
+import com.nmmoc7.kingandkinght.item.weapon.skills.abstracts.AbstractSkill;
 import com.nmmoc7.kingandkinght.item.weapon.skills.enums.AttackRangeType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
@@ -21,6 +24,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -53,10 +57,12 @@ public abstract class AbstractWeapon extends Item implements IAnimatable {
     public int switchSkillCost;
     /** 多少tick能进行一次攻击 */
     private final int attackSpeed;
+    private final int baseAttackAmount;
 
     public final Map<Integer, AttackRangeType[][]> tierToAttackRangeMap = new HashMap<>();
 
     public AbstractWeapon(String name,
+                          int baseAttackAmount,
                           int switchSkillCost,
                           int attackSpeed,
                           ItemGroup itemGroup,
@@ -67,6 +73,7 @@ public abstract class AbstractWeapon extends Item implements IAnimatable {
         this.switchSkillCost = switchSkillCost;
 
         this.attackSpeed = attackSpeed;
+        this.baseAttackAmount = baseAttackAmount;
 
         ModWeapons.WEAPONS.add(this);
     }
@@ -135,13 +142,15 @@ public abstract class AbstractWeapon extends Item implements IAnimatable {
 
     @Override
     public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-        if (!worldIn.isRemote) {
-            if (entityIn instanceof PlayerEntity) {
-                stack.getCapability(ModCapabilities.WEAPON_CAPABILITY).ifPresent(theCap -> {
-                    theCap.tick((ServerPlayerEntity) entityIn);
-                });
-            }
+        if (entityIn instanceof ServerPlayerEntity) {
+            ServerPlayerEntity player = (ServerPlayerEntity) entityIn;
+            WeaponCapability cap = stack.getCapability(ModCapabilities.WEAPON_CAPABILITY).orElse(null);
+            cap.tick(player);
         }
+    }
+
+    public int getBaseAttackAmount() {
+        return baseAttackAmount;
     }
 
     public void setSwitchSkillCost(int switchSkillCost) {
@@ -166,44 +175,50 @@ public abstract class AbstractWeapon extends Item implements IAnimatable {
 
     public void onLeftClick(ServerPlayerEntity player, ItemStack weapon) {
         WeaponCapability cap = weapon.getCapability(ModCapabilities.WEAPON_CAPABILITY).orElse(null);
-        AttackRangeType[][] attackRange = cap.getActiveAttackRange();
 
-        double exRange = MathHelper.sqrt(
-                (attackRange.length * attackRange.length) +
-                        (attackRange[0].length / 2f) * (attackRange[0].length / 2f));
-        int rangeUp = 2;
-        int rangeBottom = 1;
+        if (ModServerCounter.count - cap.getLastAttackTick() >= cap.getAttackSpeed()) {
+            AttackRangeType[][] attackRange = cap.getActiveAttackRange();
 
-        player.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB (
-                player.getPosX() + exRange,
-                player.getPosY() + rangeUp,
-                player.getPosZ() + exRange,
-                player.getPosX() - exRange,
-                player.getPosY() - rangeBottom,
-                player.getPosZ() - exRange
-        ), entity -> {
-            if (entity instanceof LivingEntity && AttackUtil.canAttack(player, entity)) {
-                //TODO attack
-                KingAndKnight.LOGGER.error(entity.toString());
-                return true;
+            double exRange = MathHelper.sqrt(
+                    (attackRange.length * attackRange.length) +
+                            (attackRange[0].length / 2f) * (attackRange[0].length / 2f));
+            int rangeUp = 2;
+            int rangeBottom = 1;
+
+            List<LivingEntity> entityList = player.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(
+                    player.getPosX() + exRange,
+                    player.getPosY() + rangeUp,
+                    player.getPosZ() + exRange,
+                    player.getPosX() - exRange,
+                    player.getPosY() - rangeBottom,
+                    player.getPosZ() - exRange
+            ));
+
+            for (LivingEntity entity : entityList) {
+                if (AttackUtil.canAttack(player, entity) && entity.isAlive()) {
+                    entity.attackEntityFrom(DamageSource.MAGIC, cap.getAttackAmount());
+
+                    if (cap.getActiveSkill().isFinish() && cap.getActiveSkill().getDurationType() == AbstractSkill.DurationType.ATTACK) {
+                        cap.getActiveSkill().castAttack(player, entity, weapon);
+                    }
+
+                    cap.setLastAttackTick(ModServerCounter.count);
+                    break;
+                }
             }
-
-            return false;
-        });
+        }
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         if (!worldIn.isRemote) {
+            WeaponCapability cap = playerIn.getHeldItem(handIn).getCapability(ModCapabilities.WEAPON_CAPABILITY).orElse(null);
+
             if (playerIn.isSneaking()) {
-                playerIn.getHeldItem(handIn).getCapability(ModCapabilities.WEAPON_CAPABILITY).ifPresent(theCap -> {
-                    theCap.switchSkill((ServerPlayerEntity) playerIn);
-                });
+                cap.switchSkill((ServerPlayerEntity) playerIn);
             }
             else {
-                playerIn.getHeldItem(handIn).getCapability(ModCapabilities.WEAPON_CAPABILITY).ifPresent(theCap -> {
-                    theCap.getActiveSkill().defaultCast();
-                });
+                cap.getActiveSkill().cast((ServerPlayerEntity) playerIn, playerIn.getHeldItem(handIn));
             }
         }
 

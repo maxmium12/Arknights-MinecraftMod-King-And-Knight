@@ -2,9 +2,12 @@ package com.nmmoc7.kingandkinght.item.weapon.skills;
 
 import com.nmmoc7.kingandkinght.KingAndKnight;
 import com.nmmoc7.kingandkinght.item.weapon.skills.abstracts.AbstractSkill;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ITextComponent;
@@ -17,8 +20,11 @@ import net.minecraftforge.common.util.INBTSerializable;
  */
 public class SkillData extends CapabilityProvider<SkillData> implements INBTSerializable<CompoundNBT> {
     private AbstractSkill skill;
+    int level;
     private int skillPoint;
     private int durationTime;
+
+    private boolean isFinish;
 
     public static final SkillData EMPTY_SKILL = new SkillData(null);
 
@@ -32,19 +38,65 @@ public class SkillData extends CapabilityProvider<SkillData> implements INBTSeri
         if (!isEmpty()) {
             if (skill.hasWarmupTime()) {
                 if (skillPointCanChange()) {
-                    setSkillPoint(skill.getWarmupTime());
+                    setSkillPoint(skill.getWarmupTime(level));
+                    isFinish = true;
                 }
             }
         }
     }
 
-    public void defaultCast() {
-        if (durationTimeCanChange()) {
-            if (skillPointCanChange() && getSkillPoint() == getMaxSkillPoint()) {
+    public void reset() {
+        if (!isEmpty()) {
+            if (skillPointCanChange()) {
                 setSkillPoint(0);
-                setDurationTime(getMaxDurationTime());
+                isFinish = true;
             }
         }
+    }
+
+    public void tick(ServerPlayerEntity player, ItemStack weapon) {
+        if (!isFinish()) {
+            if (getDurationType() == AbstractSkill.DurationType.NATURAL) {
+                castTick(player, weapon);
+            }
+
+            if (getDurationType() != AbstractSkill.DurationType.NULL && getDurationTime() == 0) {
+                finish(player, weapon);
+            }
+        }
+    }
+
+    public void cast(ServerPlayerEntity player, ItemStack weapon) {
+        if (skillPoint >= getMaxSkillPoint() && castBegin(player, weapon) == AbstractSkill.CastResult.SUCCESS) {
+            setDurationTime(skill.getMaxDurationTime(level));
+            isFinish = false;
+        }
+    }
+
+    public void finish(ServerPlayerEntity player, ItemStack weapon) {
+        castFinish(player, weapon);
+        reset();
+        isFinish = true;
+    }
+
+    private AbstractSkill.CastResult castBegin(ServerPlayerEntity player, ItemStack weapon) {
+        return skill.castBegin(player, weapon, this);
+    }
+
+    public void castTick(ServerPlayerEntity player, ItemStack weapon) {
+        skill.castTick(player, weapon, this, durationTime);
+    }
+
+    public void castAttack(ServerPlayerEntity player, Entity target, ItemStack weapon) {
+        skill.castAttack(player, target, weapon, this);
+    }
+
+    public void castUnderAttack(ServerPlayerEntity player, Entity attacker, ItemStack weapon) {
+        skill.castUnderAttack(player, attacker, weapon, this);
+    }
+
+    private void castFinish(ServerPlayerEntity player, ItemStack weapon) {
+        skill.castFinish(player, weapon, this);
     }
 
     public boolean isEmpty() {
@@ -95,7 +147,7 @@ public class SkillData extends CapabilityProvider<SkillData> implements INBTSeri
 
     public int getMaxSkillPoint() {
         if (!isEmpty()) {
-            return skill.getMaxCoolDownTime();
+            return skill.getMaxCoolDownTime(level);
         }
         else {
             return 0;
@@ -108,7 +160,7 @@ public class SkillData extends CapabilityProvider<SkillData> implements INBTSeri
 
     public int getMaxDurationTime() {
         if (!isEmpty()) {
-            return skill.getMaxDurationTime();
+            return skill.getMaxDurationTime(level);
         }
         else {
             return 0;
@@ -119,8 +171,16 @@ public class SkillData extends CapabilityProvider<SkillData> implements INBTSeri
         return skill;
     }
 
-    public void cast(ItemStack weapon, PlayerEntity player) {
-        skill.cast(this, weapon, player);
+    public boolean isFinish() {
+        return isFinish;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     @Override
