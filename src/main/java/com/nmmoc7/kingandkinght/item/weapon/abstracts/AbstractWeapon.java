@@ -13,6 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
@@ -24,6 +25,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -163,15 +165,30 @@ public abstract class AbstractWeapon extends Item implements IAnimatable {
     }
 
     public void onLeftClick(ServerPlayerEntity player, ItemStack weapon) {
-        player.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(
-                player.getPosX() + 5,
-                player.getPosY() + 5,
-                player.getPosZ() + 5,
-                player.getPosX() - 5,
-                player.getPosY() - 5,
-                player.getPosZ() - 5
-        )).forEach(entity -> {
-            AttackUtil.canAttack(player, entity);
+        WeaponCapability cap = weapon.getCapability(ModCapabilities.WEAPON_CAPABILITY).orElse(null);
+        AttackRangeType[][] attackRange = cap.getActiveAttackRange();
+
+        double exRange = MathHelper.sqrt(
+                (attackRange.length * attackRange.length) +
+                        (attackRange[0].length / 2f) * (attackRange[0].length / 2f));
+        int rangeUp = 2;
+        int rangeBottom = 1;
+
+        player.world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB (
+                player.getPosX() + exRange,
+                player.getPosY() + rangeUp,
+                player.getPosZ() + exRange,
+                player.getPosX() - exRange,
+                player.getPosY() - rangeBottom,
+                player.getPosZ() - exRange
+        ), entity -> {
+            if (entity instanceof LivingEntity && AttackUtil.canAttack(player, entity)) {
+                //TODO attack
+                KingAndKnight.LOGGER.error(entity.toString());
+                return true;
+            }
+
+            return false;
         });
     }
 

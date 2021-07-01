@@ -6,52 +6,51 @@ import com.nmmoc7.kingandkinght.capability.weapon.WeaponCapability;
 import com.nmmoc7.kingandkinght.item.weapon.abstracts.AbstractWeapon;
 import com.nmmoc7.kingandkinght.item.weapon.skills.enums.AttackRangeType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
+
+import java.util.ArrayList;
 
 /**
- * x = r cos(t)
- * y = r sin(t)
  * @author DustW
  */
 public class AttackUtil {
-    public static double radians = 180 / Math.PI;
-
     public static boolean canAttack(ServerPlayerEntity player, Entity target) {
-        if (player.getHeldItemMainhand().getItem() instanceof AbstractWeapon) {
+        if (target != player && player.getHeldItemMainhand().getItem() instanceof AbstractWeapon) {
             ItemStack weapon = player.getHeldItemMainhand();
-            AbstractWeapon weaponItem = (AbstractWeapon) player.getHeldItemMainhand().getItem();
-
-            double[] point = rotatePoint(new double[] {
-                    target.getPosX() - player.getPosX(),
-                    target.getPosZ() - player.getPosZ()}, player.cameraYaw);
-
-            int[] indexPoint = new int[] {
-                    Math.toIntExact(Math.round(point[0])),
-                    Math.toIntExact(Math.round(point[1]))};
-
             WeaponCapability cap = weapon.getCapability(ModCapabilities.WEAPON_CAPABILITY).orElse(null);
 
-            AttackRangeType[][] attackRange = cap.getActiveAttackRange();
+            double pointX = target.getPosX() - player.getPosX();
+            double pointY = target.getPosZ() - player.getPosZ();
+            double[] pointF = rotatePoint(pointX, pointY, -player.rotationYaw, true);
 
-            try {
-                if (attackRange[indexPoint[0]][indexPoint[1]] == AttackRangeType.Y) {
-                    KingAndKnight.LOGGER.warn(target.toString());
-                    return true;
-                }
-            }
-            catch (ArrayIndexOutOfBoundsException ignored) {
-                KingAndKnight.LOGGER.warn("x: " + indexPoint[0] + "z: " + indexPoint[1]);
-            }
+            AttackRangeType[][] attackRange = cap.getActiveAttackRange();
+            int[] attackCore = cap.getAttackRangeCore();
+
+            int indexX = (int) pointF[0] + attackCore[0];
+            int indexY = (int) pointF[1] + attackCore[1];
+
+            return indexX < attackRange.length && indexY < attackRange[0].length &&
+                    indexX >= 0 && indexY >= 0 &&
+                    attackRange[indexX][indexY] == AttackRangeType.Y;
         }
 
         return false;
     }
 
-    public static double[] rotatePoint(double[] point, double angle) {
-        return new double[] {
-                Math.sqrt(point[0] + point[1]) * Math.cos(angle * radians),
-                Math.sqrt(point[0] + point[1]) * Math.sin(angle * radians)
+    public static double[] rotatePoint(double x, double y, double angle, boolean isDegrees) {
+        if (isDegrees) {
+            angle = Math.toRadians(angle);
+        }
+
+        double cos = MathHelper.cos((float) (angle));
+        double sin = MathHelper.sin((float) (angle));
+
+        return new double[]{
+                x * cos - y * sin,
+                x * sin + y * cos
         };
     }
 }

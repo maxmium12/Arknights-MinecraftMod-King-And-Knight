@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "king_and_kinght.refmap.json",
   "mixins": [
-    "MixinMinecraft"
+    "MixinRenderSystem"
   ],
   "client": [
   ],
