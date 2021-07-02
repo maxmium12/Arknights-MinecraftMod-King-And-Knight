@@ -1,6 +1,8 @@
 package com.nmmoc7.kingandkinght.data;
 
 import com.nmmoc7.kingandkinght.KingAndKnight;
+import com.nmmoc7.kingandkinght.data.dimension.DimensionTypeProvider;
+import com.nmmoc7.kingandkinght.data.dimension.FlatDimensionProvider;
 import com.nmmoc7.kingandkinght.data.item.ItemModel;
 import com.nmmoc7.kingandkinght.data.lang.LangEnUs;
 import com.nmmoc7.kingandkinght.data.lang.LangZhCn;
@@ -26,6 +28,8 @@ public class DataGenHandler {
         }
 
         if (event.includeServer()) {
+            generator.addProvider(new DimensionTypeProvider(generator));
+            generator.addProvider(new FlatDimensionProvider(generator));
             generator.addProvider(new LangZhCn(generator));
             generator.addProvider(new LangEnUs(generator));
             generator.addProvider(new ModRecipesProvider(generator));

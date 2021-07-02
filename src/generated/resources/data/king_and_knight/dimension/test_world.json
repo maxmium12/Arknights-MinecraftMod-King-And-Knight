@@ -1,0 +1,19 @@
+{
+  "type": "king_and_knight:test_world_type",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "minecraft:plains",
+      "layers": [
+        {
+          "height": 1,
+          "block": "minecraft:bedrock"
+        }
+      ],
+      "structures": {
+        "stronghold": {},
+        "structures": {}
+      }
+    }
+  }
+}
