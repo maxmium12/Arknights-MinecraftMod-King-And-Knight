@@ -3,6 +3,7 @@ package com.nmmoc7.kingandkinght.item.weapon;
 import com.nmmoc7.kingandkinght.capability.ModCapabilities;
 import com.nmmoc7.kingandkinght.capability.weapon.WeaponCapability;
 import com.nmmoc7.kingandkinght.item.weapon.abstracts.AbstractWeapon;
+import com.nmmoc7.kingandkinght.item.weapon.abstracts.ModLongRangeWeaponBase;
 import com.nmmoc7.kingandkinght.item.weapon.skills.SkillData;
 import com.nmmoc7.kingandkinght.item.weapon.skills.SkillFairyGuardian;
 import com.nmmoc7.kingandkinght.item.weapon.skills.abstracts.AbstractSkill;
@@ -19,7 +20,7 @@ import static com.nmmoc7.kingandkinght.item.weapon.skills.enums.AttackRangeType.
 /**
  * @author DustW
  */
-public class IrisWeapon extends AbstractWeapon {
+public class IrisWeapon extends ModLongRangeWeaponBase {
     public IrisWeapon() {
         super("iris_weapon", 548, 22, 20, ModItemGroups.WEAPON_GROUP, () -> IrisWeaponRender::new);
 
@@ -38,11 +39,6 @@ public class IrisWeapon extends AbstractWeapon {
                 {O, Y, Y, Y},
                 {N, Y, Y, Y}
         });
-    }
-    
-    @Override
-    public boolean onLeftClickEntity(ItemStack stack, PlayerEntity player, Entity entity) {
-        return true;
     }
 
     @Override

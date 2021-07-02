@@ -8,6 +8,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.util.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -26,7 +27,7 @@ public class FlatDimensionProvider implements IDataProvider {
     }
 
     @Override
-    public void act(DirectoryCache cache) throws IOException {
+    public void act(@NotNull DirectoryCache cache) throws IOException {
         addDimensions();
 
         Path output = generator.getOutputFolder();
@@ -53,7 +54,7 @@ public class FlatDimensionProvider implements IDataProvider {
     }
 
     @Override
-    public String getName() {
+    public @NotNull String getName() {
         return "KAK Flat Dimension";
     }
 
