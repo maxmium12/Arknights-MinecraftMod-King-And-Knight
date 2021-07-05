@@ -3,6 +3,7 @@ package com.nmmoc7.kingandkinght.gui;
 import com.nmmoc7.kingandkinght.KingAndKnight;
 import com.nmmoc7.kingandkinght.itemgroup.ModItemGroups;
 import net.minecraft.block.Block;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -27,6 +28,7 @@ public class ModRegister {
         event.getRegistry().registerAll(new BlockItem(Regsiter.TEST_BLOCK, new Item.Properties().group(ModItemGroups.BLOCK_GROUP)).setRegistryName(new ResourceLocation(KingAndKnight.MOD_ID, "test_block")));
     }
 
+    @SubscribeEvent
     public static void onContainerTypeRegister(RegistryEvent.Register<ContainerType<?>> event) {
         event.getRegistry().register(Regsiter.TEST_CONTAINER);
     }
