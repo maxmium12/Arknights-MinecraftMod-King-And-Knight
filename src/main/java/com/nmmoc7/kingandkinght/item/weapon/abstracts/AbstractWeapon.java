@@ -8,8 +8,6 @@ import com.nmmoc7.kingandkinght.capability.weapon.WeaponCapabilityProvider;
 import com.nmmoc7.kingandkinght.item.InformationHelper;
 import com.nmmoc7.kingandkinght.item.ModWeapons;
 import com.nmmoc7.kingandkinght.item.weapon.AttackUtil;
-import com.nmmoc7.kingandkinght.item.weapon.WeaponUtil;
-import com.nmmoc7.kingandkinght.item.weapon.skills.SkillData;
 import com.nmmoc7.kingandkinght.item.weapon.skills.abstracts.AbstractSkill;
 import com.nmmoc7.kingandkinght.item.weapon.skills.enums.AttackRangeType;
 import net.minecraft.block.BlockState;

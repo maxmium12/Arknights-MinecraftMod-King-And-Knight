@@ -2,7 +2,6 @@ package com.nmmoc7.kingandkinght.data.dimension;
 
 import com.nmmoc7.kingandkinght.KingAndKnight;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.biome.Biome;
 
 /**
  * @author DustW

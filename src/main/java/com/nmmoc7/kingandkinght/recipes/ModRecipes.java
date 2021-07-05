@@ -20,6 +20,5 @@ public class ModRecipes {
     public static final InfrastructureRecipes TEST_RECIPES = new InfrastructureRecipes(
                 new ResourceLocation(KingAndKnight.MOD_ID, "test"),
                 new ItemStack[]{new ItemStack(Items.APPLE, 2)},
-                new ItemStack(ModItems.ESTER),
-                6).addToList(INFRASTRUCTURE_RECIPES_LIST);
+                new ItemStack(ModItems.ESTER)).addToList(INFRASTRUCTURE_RECIPES_LIST);
 }

@@ -5,9 +5,8 @@ import com.nmmoc7.kingandkinght.tileentity.InfrastructureTileEntity;
 import com.nmmoc7.kingandkinght.tileentity.abstracts.AbstractTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.item.ItemEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
@@ -47,43 +46,28 @@ public class InfrastructureMachineBase extends AbstractMachine {
     }
 
     @Override
-    public ActionResultType onBlockActivatedClient(BlockState state, World worldIn, BlockPos pos, ClientPlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivatedClient(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         return ActionResultType.SUCCESS;
     }
 
     @Override
-    public ActionResultType onBlockActivatedServer(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public ActionResultType onBlockActivatedServer(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         AbstractTileEntity tileEntity = getTileEntity(worldIn, pos);
         AbstractTileEntity.ModItemStackHandlerBase handler = tileEntity.getHandler();
 
         if (!player.isSneaking()) {
             ItemStack heldItem = player.getHeldItem(handIn);
 
-            for (int i = 0; i < handler.getSlots(); i++) {
-                if (handler.getStackInSlot(i) == ItemStack.EMPTY) {
-                    handler.setStackInSlot(i, heldItem.copy());
-                    player.setHeldItem(handIn, ItemStack.EMPTY);
-                    break;
-                }
-            }
+            handler.push(heldItem);
         }
         else {
-            for (int i = handler.getSlots() - 1; i >= 0; i--) {
-                if (handler.getStackInSlot(i) != ItemStack.EMPTY) {
-
-                    worldIn.addEntity(
-                            new ItemEntity(
-                                    worldIn,
-                                    player.getPosX(), player.getPosY(), player.getPosZ(),
-                                    handler.getStackInSlot(i).copy())
-                    );
-
-                    handler.setStackInSlot(i, ItemStack.EMPTY);
-                    break;
-                }
-            }
+            worldIn.addEntity(
+                    new ItemEntity(
+                            worldIn,
+                            player.getPosX(), player.getPosY(), player.getPosZ(),
+                            handler.pop())
+            );
         }
-
 
         return ActionResultType.SUCCESS;
     }

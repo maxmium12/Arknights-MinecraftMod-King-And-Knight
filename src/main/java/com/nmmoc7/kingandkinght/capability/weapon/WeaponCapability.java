@@ -1,6 +1,5 @@
 package com.nmmoc7.kingandkinght.capability.weapon;
 
-import com.nmmoc7.kingandkinght.ModServerCounter;
 import com.nmmoc7.kingandkinght.capability.ModCapabilities;
 import com.nmmoc7.kingandkinght.item.weapon.WeaponUtil;
 import com.nmmoc7.kingandkinght.item.weapon.abstracts.AbstractWeapon;

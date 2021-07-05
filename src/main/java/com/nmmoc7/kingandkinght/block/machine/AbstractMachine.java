@@ -2,9 +2,7 @@ package com.nmmoc7.kingandkinght.block.machine;
 
 import com.nmmoc7.kingandkinght.block.base.ModBlockBase;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -28,14 +26,14 @@ public abstract class AbstractMachine extends ModBlockBase {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         if (worldIn.isRemote) {
-            return onBlockActivatedClient(state, worldIn, pos, (ClientPlayerEntity) player, handIn, hit);
+            return onBlockActivatedClient(state, worldIn, pos, player, handIn, hit);
         }
         else {
-            return onBlockActivatedServer(state, worldIn, pos, (ServerPlayerEntity) player, handIn, hit);
+            return onBlockActivatedServer(state, worldIn, pos, player, handIn, hit);
         }
     }
 
-    public abstract ActionResultType onBlockActivatedClient(BlockState state, World worldIn, BlockPos pos, ClientPlayerEntity player, Hand handIn, BlockRayTraceResult hit);
+    public abstract ActionResultType onBlockActivatedClient(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit);
 
-    public abstract ActionResultType onBlockActivatedServer(BlockState state, World worldIn, BlockPos pos, ServerPlayerEntity player, Hand handIn, BlockRayTraceResult hit);
+    public abstract ActionResultType onBlockActivatedServer(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit);
 }

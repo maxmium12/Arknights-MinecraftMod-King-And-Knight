@@ -1,17 +1,13 @@
 package com.nmmoc7.kingandkinght.item.weapon;
 
-import com.nmmoc7.kingandkinght.KingAndKnight;
 import com.nmmoc7.kingandkinght.capability.ModCapabilities;
 import com.nmmoc7.kingandkinght.capability.weapon.WeaponCapability;
 import com.nmmoc7.kingandkinght.item.weapon.abstracts.AbstractWeapon;
 import com.nmmoc7.kingandkinght.item.weapon.skills.enums.AttackRangeType;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
-
-import java.util.ArrayList;
 
 /**
  * @author DustW

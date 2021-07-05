@@ -1,11 +1,11 @@
 package com.nmmoc7.kingandkinght.data.dimension;
 
-import com.google.gson.*;
-import com.nmmoc7.kingandkinght.KingAndKnight;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.IOException;

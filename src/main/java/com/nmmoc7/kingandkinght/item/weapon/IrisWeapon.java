@@ -1,8 +1,6 @@
 package com.nmmoc7.kingandkinght.item.weapon;
 
-import com.nmmoc7.kingandkinght.capability.ModCapabilities;
 import com.nmmoc7.kingandkinght.capability.weapon.WeaponCapability;
-import com.nmmoc7.kingandkinght.item.weapon.abstracts.AbstractWeapon;
 import com.nmmoc7.kingandkinght.item.weapon.abstracts.ModLongRangeWeaponBase;
 import com.nmmoc7.kingandkinght.item.weapon.skills.SkillData;
 import com.nmmoc7.kingandkinght.item.weapon.skills.SkillFairyGuardian;
@@ -10,10 +8,6 @@ import com.nmmoc7.kingandkinght.item.weapon.skills.abstracts.AbstractSkill;
 import com.nmmoc7.kingandkinght.item.weapon.skills.enums.AttackRangeType;
 import com.nmmoc7.kingandkinght.itemgroup.ModItemGroups;
 import com.nmmoc7.kingandkinght.model.IrisWeaponRender;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 import static com.nmmoc7.kingandkinght.item.weapon.skills.enums.AttackRangeType.*;
 

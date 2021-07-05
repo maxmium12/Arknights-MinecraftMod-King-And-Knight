@@ -1,6 +1,7 @@
 package com.nmmoc7.kingandkinght.item.weapon.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.nmmoc7.kingandkinght.capability.ModCapabilities;
 import com.nmmoc7.kingandkinght.capability.weapon.WeaponCapability;
@@ -9,10 +10,10 @@ import com.nmmoc7.kingandkinght.item.weapon.skills.enums.AttackRangeType;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.settings.PointOfView;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -21,6 +22,8 @@ import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.TickEvent;
@@ -32,68 +35,50 @@ import org.lwjgl.opengl.GL13;
 /**
  * @author DustW
  */
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(value = Dist.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class AttackRangeRenderEvent {
     static int tick = 0;
 
     @SubscribeEvent
     public static void onPlayerRender(RenderPlayerEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
-        ClientPlayerEntity player = mc.player;
+        PlayerEntity player = mc.player;
 
         if (mc.isGamePaused() || mc.gameSettings.getPointOfView() == PointOfView.FIRST_PERSON) {
             return;
         }
 
-        float partialTicks = event.getPartialRenderTick();
-
-        Vector3d playerPos = player.getEyePosition(partialTicks).add(0, -player.getEyeHeight(player.getPose()), 0);
-        BlockPos blockPos = player.getPosition();
-        Vector3d projectPos = mc.getRenderManager().info.getProjectedView();
-
-        MatrixStack transform = event.getMatrixStack();
-
-        transform.push();
-
-        /* 旋转角度 */
-        transform.rotate(Vector3f.YP.rotationDegrees(-player.getYaw(partialTicks)));
-        transform.translate(-projectPos.getX(), -projectPos.getY(), -projectPos.getZ());
-
-        openBlendA();
-        drawAttackRange(blockPos, transform.getLast().getMatrix(), playerPos, player, partialTicks);
-        closeBlend();
-        transform.pop();
+        draw(player, event.getPartialRenderTick(), mc, event.getMatrixStack());
     }
 
     @SubscribeEvent
     public static void onWorldRender(RenderWorldLastEvent event) {
         Minecraft mc = Minecraft.getInstance();
-        ClientPlayerEntity player = mc.player;
+        PlayerEntity player = mc.player;
 
         if (mc.isGamePaused() || mc.gameSettings.getPointOfView() != PointOfView.FIRST_PERSON) {
             return;
         }
 
-        float partialTicks = event.getPartialTicks();
+        draw(player, event.getPartialTicks(), mc, event.getMatrixStack());
+    }
 
+    private static void draw(PlayerEntity player, float partialTicks, Minecraft mc, MatrixStack matrixStack) {
         Vector3d playerPos = player.getEyePosition(partialTicks).add(0, -player.getEyeHeight(player.getPose()), 0);
         BlockPos blockPos = player.getPosition();
         Vector3d projectPos = mc.getRenderManager().info.getProjectedView();
 
-        MatrixStack transform = event.getMatrixStack();
-
-        transform.push();
+        matrixStack.push();
 
         /* 旋转角度 */
-        transform.rotate(Vector3f.YP.rotationDegrees(-player.getYaw(partialTicks)));
-        transform.translate(-projectPos.getX(), -projectPos.getY(), -projectPos.getZ());
+        matrixStack.rotate(Vector3f.YP.rotationDegrees(-player.getYaw(partialTicks)));
+        matrixStack.translate(-projectPos.getX(), -projectPos.getY(), -projectPos.getZ());
 
         openBlendA();
-        openMultiSample();
-        drawAttackRange(blockPos, transform.getLast().getMatrix(), playerPos, player, partialTicks);
-        closeMultiSample();
+        drawAttackRange(blockPos, matrixStack.getLast().getMatrix(), playerPos, player, partialTicks);
         closeBlend();
-        transform.pop();
+        matrixStack.pop();
     }
 
     /** 不 要 在 服 务 端 调 用
@@ -119,7 +104,7 @@ public class AttackRangeRenderEvent {
     }
 
     /** 不 要 在 服 务 端 调 用 */
-    public static void drawAttackRange(BlockPos blockPos, Matrix4f matrix4f, Vector3d playerPos, ClientPlayerEntity player, float partialTicks) {
+    public static void drawAttackRange(BlockPos blockPos, Matrix4f matrix4f, Vector3d playerPos, PlayerEntity player, float partialTicks) {
         if (player.getHeldItemMainhand().getItem() instanceof AbstractWeapon) {
             int[] color1 = {102, 102, 255};
             int[] colorC = {0, 0, 0};
@@ -164,7 +149,7 @@ public class AttackRangeRenderEvent {
     /** 不 要 在 服 务 端 调 用 */
     public static double getBlockMaxY(BlockPos blockPos) {
         Minecraft mc = Minecraft.getInstance();
-        ClientPlayerEntity player = mc.player;
+        PlayerEntity player = mc.player;
         World world = mc.world;
         BlockState blockState = world.getBlockState(blockPos);
         Block block = blockState.getBlock();
