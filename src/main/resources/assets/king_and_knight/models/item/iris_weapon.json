@@ -19,22 +19,14 @@
       "translation": [5.75, -4.25, -10.75]
     },
     "gui": {
-      "rotation": [0, 90, 0],
-      "translation": [0, -13.25, 0],
-      "scale": [0.8, 0.8, 0.8]
+      "rotation": [45, 90, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.4, 0.4, 0.4]
     },
     "fixed": {
       "rotation": [0, -90, 0],
       "translation": [0, 0, -1],
       "scale": [0.4, 0.4, 0.4]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "pulling": 0
-      },
-      "model": "a2kn1gh7:item/irisweapon"
-    }
-  ]
+  }
 }

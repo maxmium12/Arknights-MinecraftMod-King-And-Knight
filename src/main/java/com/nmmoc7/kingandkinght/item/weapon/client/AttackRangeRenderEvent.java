@@ -76,7 +76,9 @@ public class AttackRangeRenderEvent {
         matrixStack.translate(-projectPos.getX(), -projectPos.getY(), -projectPos.getZ());
 
         openBlendA();
+        openMultiSample();
         drawAttackRange(blockPos, matrixStack.getLast().getMatrix(), playerPos, player, partialTicks);
+        closeMultiSample();
         closeBlend();
         matrixStack.pop();
     }

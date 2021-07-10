@@ -1,6 +1,7 @@
 package com.nmmoc7.kingandkinght.capability;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.nmmoc7.kingandkinght.KingAndKnight;
 import com.nmmoc7.kingandkinght.capability.player.level.LevelCapability;
 import com.nmmoc7.kingandkinght.item.weapon.abstracts.AbstractWeapon;
 import net.minecraft.client.Minecraft;
@@ -30,6 +31,10 @@ public class ClientEventHandler {
             int y = event.getWindow().getScaledHeight();
 
             if (entity instanceof PlayerEntity) {
+                if (!((PlayerEntity) entity).getHeldItemMainhand().getItem().getRegistryName().getNamespace().equals(KingAndKnight.MOD_ID)) {
+                    return;
+                }
+
                 LazyOptional<LevelCapability> capability = entity.getCapability(ModCapabilities.LEVEL_CAPABILITY, null);
 
                 capability.ifPresent(theCap -> {
