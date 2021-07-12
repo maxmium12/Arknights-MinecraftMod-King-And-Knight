@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.nmmoc7.king_and_knight.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "king_and_knight.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
