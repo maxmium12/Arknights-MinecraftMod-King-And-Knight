@@ -1,6 +1,9 @@
 package com.nmmoc7.king_and_knight;
 
+import com.nmmoc7.king_and_knight.newgui.ContainerRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
@@ -22,7 +25,8 @@ public class KingAndKnight {
 
     public KingAndKnight() {
         INSTANCE = this;
-
+        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        ContainerRegister.CONTAINERS.register(bus);
         GeckoLib.initialize();
     }
 }
