@@ -31,4 +31,8 @@ public class TickTimer {
     public static int getTiming(Object object) {
         return TIMING_OBJECTS.get(object).getRight();
     }
+
+    public static void removeTiming(Object object){
+        TIMING_OBJECTS.remove(object);
+    }
 }
