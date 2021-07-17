@@ -16,9 +16,10 @@ public class Tag {
     private final int texV;
     private final int texWidth;
     private final int texHeight;
+    private final int level;
 
     public Tag(String id, ITextComponent title, ResourceLocation tagOffTexture, ResourceLocation tagOnTexture,
-               int texU, int texV, int texWidth, int texHeight) {
+               int texU, int texV, int texWidth, int texHeight, int level) {
 
         this.id = id;
         this.title = title;
@@ -28,6 +29,7 @@ public class Tag {
         this.texV = texV;
         this.texWidth = texWidth;
         this.texHeight = texHeight;
+        this.level = level;
     }
 
     public int getTexHeight() {
@@ -60,5 +62,9 @@ public class Tag {
 
     public ITextComponent getTitle() {
         return title;
+    }
+
+    public int getLevel() {
+        return level;
     }
 }

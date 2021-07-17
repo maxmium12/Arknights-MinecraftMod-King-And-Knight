@@ -18,6 +18,10 @@ public class GuiTester {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         ClientRegistry.registerKeyBinding(EventHandler.TEST_KEY);
-        Tags.register(new Tag("test", new StringTextComponent("test"), new ResourceLocation("king_and_knight", "textures/gui/test.png"), null, 0, 0, 32, 32));
+        Tags.register(new Tag("test", new StringTextComponent("test"), new ResourceLocation("king_and_knight", "textures/gui/test.png"), null, 0, 0, 32, 32, 1));
+        Tags.register(new Tag("test1", new StringTextComponent("test1"), new ResourceLocation("king_and_knight", "textures/gui/test.png"), null, 0, 0, 32, 32, 1));
+        Tags.register(new Tag("test2", new StringTextComponent("test2"), new ResourceLocation("king_and_knight", "textures/gui/test.png"), null, 0, 0, 32, 32, 1));
+        Tags.register(new Tag("test3", new StringTextComponent("test3"), new ResourceLocation("king_and_knight", "textures/gui/test.png"), null, 0, 0, 32, 32, 1));
+
     }
 }

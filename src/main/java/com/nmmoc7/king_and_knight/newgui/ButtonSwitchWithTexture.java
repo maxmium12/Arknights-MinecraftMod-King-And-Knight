@@ -113,7 +113,7 @@ public class ButtonSwitchWithTexture extends Button {
             mc.textureManager.bindTexture(buttonOffTexture);
             blit(matrixStack, x, y, width, height, texUStart, texVStart, texUOffset, texVOffset, texWidth, texHeight);
 
-        } else{
+        } else {
             if (state) {
                 mc.textureManager.bindTexture(buttonOnTexture);
                 if (needRenderAnimation) {
@@ -177,7 +177,7 @@ public class ButtonSwitchWithTexture extends Button {
             alpha = 255 - alpha;
         }
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        renderSimpleBackground(matrixStack.getLast().getMatrix(), (int)alpha);
+        renderSimpleBackground(matrixStack.getLast().getMatrix(), (int) alpha);
         RenderSystem.disableAlphaTest();
         RenderSystem.disableBlend();
         if (tick >= 20) {
@@ -189,10 +189,10 @@ public class ButtonSwitchWithTexture extends Button {
         int tick = TickTimer.getTiming(this);
         BufferBuilder builder = Tessellator.getInstance().getBuffer();
         builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        builder.pos(matrix, x, y + height, -1).color(backgroundRed, backgroundGreen, backgroundBlue, alpha).endVertex();
-        builder.pos(matrix, x + width, y + height, -1).color(backgroundRed, backgroundGreen, backgroundBlue, alpha).endVertex();
-        builder.pos(matrix, x + width, y, -1).color(backgroundRed, backgroundGreen, backgroundBlue, alpha).endVertex();
-        builder.pos(matrix, x, y, -1).color(backgroundRed, backgroundGreen, backgroundBlue, alpha).endVertex();
+        builder.pos(matrix, x, y + height, 0).color(backgroundRed, backgroundGreen, backgroundBlue, alpha).endVertex();
+        builder.pos(matrix, x + width, y + height, 0).color(backgroundRed, backgroundGreen, backgroundBlue, alpha).endVertex();
+        builder.pos(matrix, x + width, y, 0).color(backgroundRed, backgroundGreen, backgroundBlue, alpha).endVertex();
+        builder.pos(matrix, x, y, 0).color(backgroundRed, backgroundGreen, backgroundBlue, alpha).endVertex();
         builder.finishDrawing();
         WorldVertexBufferUploader.draw(builder);
         if (tick >= 20) {
