@@ -30,6 +30,7 @@ public class ModRegister {
     @SubscribeEvent
     public static void onContainerTypeRegister(RegistryEvent.Register<ContainerType<?>> event) {
         event.getRegistry().register(Regsiter.TEST_CONTAINER);
+
     }
 
     @SubscribeEvent

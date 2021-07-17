@@ -7,6 +7,7 @@ import com.nmmoc7.king_and_knight.network.server.IServerMessage;
 import com.nmmoc7.king_and_knight.network.server.ItemHandlerSyncServer;
 import com.nmmoc7.king_and_knight.network.server.PlayerCapabilitySyncServer;
 import com.nmmoc7.king_and_knight.network.server.WeaponCapabilitySyncServer;
+import com.nmmoc7.king_and_knight.newgui.PacketWeaponUpgrade;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
@@ -79,5 +80,11 @@ public class ModNetworkManager {
                 LeftClickClient::encode,
                 LeftClickClient::decode,
                 LeftClickClient::handle);
+
+        INSTANCE.registerMessage(id++,
+                PacketWeaponUpgrade.class,
+                PacketWeaponUpgrade::encode,
+                PacketWeaponUpgrade::decode,
+                PacketWeaponUpgrade::handle);
     }
 }

@@ -1,5 +1,6 @@
 package com.nmmoc7.king_and_knight.newgui;
 
+import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -22,6 +23,8 @@ public class GuiTester {
         Tags.register(new Tag("test1", new StringTextComponent("test1"), new ResourceLocation("king_and_knight", "textures/gui/test.png"), null, 0, 0, 32, 32, 1));
         Tags.register(new Tag("test2", new StringTextComponent("test2"), new ResourceLocation("king_and_knight", "textures/gui/test.png"), null, 0, 0, 32, 32, 1));
         Tags.register(new Tag("test3", new StringTextComponent("test3"), new ResourceLocation("king_and_knight", "textures/gui/test.png"), null, 0, 0, 32, 32, 1));
-
+        event.enqueueWork(() -> {
+            ScreenManager.registerFactory(ContainerRegister.WEAPON_UPGRADER_CONTAINER.get(), ScreenWeapon::new);
+        });
     }
 }
